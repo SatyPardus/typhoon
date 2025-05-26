@@ -1,6 +1,8 @@
 .DS_Store
-.idea
+.vs
 .vscode
+.idea
 
 /build
-/dist
+/cmake-build-*
+/out

@@ -14,6 +14,10 @@ class C3Vector {
 
     // Member functions
     C3Vector() = default;
+    C3Vector(float a)
+        : x(a)
+        , y(a)
+        , z(a) {};
     C3Vector(float x, float y, float z)
         : x(x)
         , y(y)

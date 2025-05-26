@@ -13,6 +13,30 @@ class CMath {
     static constexpr float OO_TWO_PI = 1.0f / TWO_PI;
 
     // Static functions
+    static float acos(float x) {
+        return ::acosf(x);
+    }
+
+    static float cos(float x) {
+        return ::cosf(x);
+    }
+
+    static float sin(float x) {
+        return ::sinf(x);
+    }
+
+    static float fabs(float x) {
+        return ::fabs(x);
+    }
+
+    static bool fequalz(float a, float b, float z) {
+        return z > CMath::fabs(a - b);
+    }
+
+    static bool fequal(float a, float b) {
+        return CMath::fequalz(a, b, 0.00000023841858f);
+    }
+
     static int32_t fint(float n) {
         return static_cast<int32_t>(n);
     }
