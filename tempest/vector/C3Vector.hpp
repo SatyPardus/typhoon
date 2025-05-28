@@ -8,11 +8,6 @@ class C44Matrix;
 
 class C3Vector {
     public:
-    // Member variables
-    float x = 0.0f;
-    float y = 0.0f;
-    float z = 0.0f;
-
     enum : uint32_t {
         eComponents = 3
     };
@@ -32,6 +27,10 @@ class C3Vector {
     static C3Vector ProjectionOnPlane(const C3Vector& v, const C3Vector& normal);
     static C3Vector NearestOnPlane(const C3Vector& p, const C3Vector& onplane, const C3Vector& normal);
 
+    // Member variables
+    float x = 0.0f;
+    float y = 0.0f;
+    float z = 0.0f;
 
     // Member functions
     C3Vector() = default;
@@ -47,7 +46,7 @@ class C3Vector {
         : x(x)
         , y(y)
         , z(z) {};
-    C3Vector(float a)
+    explicit C3Vector(float a)
         : x(a)
         , y(a)
         , z(a) {};

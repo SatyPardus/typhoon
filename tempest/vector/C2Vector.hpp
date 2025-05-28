@@ -5,10 +5,6 @@
 
 class C2Vector {
     public:
-    // Member variables
-    float x = 0.0f;
-    float y = 0.0f;
-
     enum : uint32_t {
         eComponents = 2
     };
@@ -21,13 +17,16 @@ class C2Vector {
     static float Dot(const C2Vector& l, const C2Vector& r);
     static float Cross(const C2Vector& l, const C2Vector& r);
 
+    // Member variables
+    float x = 0.0f;
+    float y = 0.0f;
 
     // Member functions
     C2Vector() = default;
     C2Vector(float x, float y)
         : x(x)
         , y(y) {};
-    C2Vector(float a)
+    explicit C2Vector(float a)
         : x(a)
         , y(a) {};
 
