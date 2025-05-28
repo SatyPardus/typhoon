@@ -7,25 +7,26 @@
 C2Vector C2Vector::FromAxisAngle(float axang, float mag) {
     float x = mag * CMath::cos(axang);
     float y = mag * CMath::sin(axang);
-    return C2Vector(x, y);
+    return { x, y };
 }
 
 C2Vector C2Vector::Min(const C2Vector& a, const C2Vector& b) {
     float x = std::fmin(a.x, b.x);
     float y = std::fmin(a.y, b.y);
-    return C2Vector(x, y);
+    return { x, y };
 }
 
 C2Vector C2Vector::Max(const C2Vector& a, const C2Vector& b) {
     float x = std::fmax(a.x, b.x);
     float y = std::fmax(a.y, b.y);
-    return C2Vector(x, y);
+    return { x, y };
 }
 
 C2Vector C2Vector::Lerp(const C2Vector& a, const C2Vector& l, const C2Vector& h) {
-    return C2Vector(
+    return {
         l.x + (h.x - l.x) * a.x,
-        l.y + (h.y - h.y) * a.y);
+        l.y + (h.y - l.y) * a.y
+    };
 }
 
 float C2Vector::Dot(const C2Vector& l, const C2Vector& r) {
@@ -94,7 +95,7 @@ C2Vector& C2Vector::operator/=(const C2Vector& a) {
 }
 
 C2Vector C2Vector::operator-() {
-    return C2Vector(-this->x, -this->y);
+    return { -this->x, -this->y };
 }
 
 float& C2Vector::operator[](uint32_t sub) {
