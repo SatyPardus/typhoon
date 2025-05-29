@@ -85,9 +85,12 @@ class C33Matrix {
     C33Matrix Adjoint() const;
     C33Matrix Inverse() const;
     C33Matrix Inverse(float det) const;
-    C33Matrix AffineInverse(const C3Vector& v);
-    C33Matrix AffineInverse(float a);
-    C33Matrix AffineInverse();
+    C33Matrix AffineInverse(const C3Vector& v) const;
+    C33Matrix AffineInverse(float a) const;
 };
+
+C33Matrix operator*(const C33Matrix& l, float a);
+C33Matrix operator*(const C33Matrix& l, const C33Matrix& r);
+C33Matrix operator/(const C33Matrix& l, float a);
 
 #endif
