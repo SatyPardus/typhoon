@@ -1,5 +1,6 @@
 #include "tempest/matrix/C33Matrix.hpp"
 #include "tempest/math/CMath.hpp"
+#include "tempest/matrix/C44Matrix.hpp"
 #include "tempest/quaternion/C4Quaternion.hpp"
 
 #include <storm/Error.hpp>
@@ -10,10 +11,11 @@ float C33Matrix::Det(float a, float b, float c, float d) {
 }
 
 C33Matrix C33Matrix::Rotation(float angle) {
-    float cosa = cos(angle);
-    float sina = sin(angle);
+    float cosa = CMath::cos(angle);
+    float sina = CMath::sin(angle);
 
     C33Matrix result;
+
     result.a0 = cosa;
     result.a1 = sina;
     result.a2 = 0.0;
@@ -25,6 +27,7 @@ C33Matrix C33Matrix::Rotation(float angle) {
     result.c0 = 0.0;
     result.c1 = 0.0;
     result.c2 = 1.0;
+
     return result;
 }
 
@@ -61,6 +64,18 @@ C33Matrix C33Matrix::Rotation(float angle, const C3Vector& axis, bool unit) {
     result.c2 = axis_.z * axis_.z * one_c + cosa;
 
     return result;
+}
+
+C33Matrix::C33Matrix(const C44Matrix& m)
+    : a0(m.a0)
+    , a1(m.a1)
+    , a2(m.a2)
+    , b0(m.b0)
+    , b1(m.b1)
+    , b2(m.b2)
+    , c0(m.c0)
+    , c1(m.c1)
+    , c2(m.c2) {
 }
 
 C33Matrix& C33Matrix::operator+=(const C33Matrix& a) {
@@ -199,7 +214,7 @@ void C33Matrix::Scale(const C3Vector& scale) {
 }
 
 void C33Matrix::Rotate(float angle) {
-    *this = C33Matrix::Rotation(angle);
+    *this = C33Matrix::Rotation(angle) * (*this);
 }
 
 void C33Matrix::Rotate(const C4Quaternion& rotation) {
@@ -293,7 +308,7 @@ C33Matrix C33Matrix::Inverse() const {
 }
 
 C33Matrix C33Matrix::Inverse(float det) const {
-    STORM_ASSERT(det != 0.0f);
+    STORM_ASSERT(CMath::fequal(det, 0.0f) == false);
     return this->Adjoint() * (1.0f / det);
 }
 
@@ -309,11 +324,11 @@ C33Matrix C33Matrix::AffineInverse(const C3Vector& v) const {
 C33Matrix C33Matrix::AffineInverse(float a) const {
     if (CMath::fequalz(a, 1.0f, 0.00000095367432f)) {
         return this->Transpose();
-    } else {
-        C33Matrix matrix = this->Transpose();
-        matrix.Scale(1.0f / (a * a));
-        return matrix;
     }
+
+    C33Matrix matrix = this->Transpose();
+    matrix.Scale(1.0f / (a * a));
+    return matrix;
 }
 
 C33Matrix operator*(const C33Matrix& l, float a) {

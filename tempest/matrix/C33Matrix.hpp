@@ -4,6 +4,7 @@
 #include "tempest/vector/C2Vector.hpp"
 #include "tempest/vector/C3Vector.hpp"
 
+class C44Matrix;
 class C4Quaternion;
 
 class C33Matrix {
@@ -40,6 +41,7 @@ class C33Matrix {
         , c0(r2.x)
         , c1(r2.y)
         , c2(r2.z) {};
+    explicit C33Matrix(const C44Matrix& m);
     C33Matrix(float a0, float a1, float a2, float b0, float b1, float b2, float c0, float c1, float c2)
         : a0(a0)
         , a1(a1)
