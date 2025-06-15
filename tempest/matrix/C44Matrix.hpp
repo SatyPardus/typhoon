@@ -41,7 +41,7 @@ class C44Matrix {
     C44Matrix() = default;
     C44Matrix(const C4Vector& r0, const C4Vector& r1, const C4Vector& r2, const C4Vector& r3);
     explicit C44Matrix(const C33Matrix& m);
-    C44Matrix(const C4Quaternion& rotation);
+    explicit C44Matrix(const C4Quaternion& rotation);
     C44Matrix(float a0, float a1, float a2, float a3, float b0, float b1, float b2, float b3, float c0, float c1, float c2, float c3, float d0, float d1, float d2, float d3);
     explicit C44Matrix(float a);
 
@@ -71,7 +71,15 @@ class C44Matrix {
     C44Matrix AffineInverse() const;
 };
 
-C44Matrix operator*(const C44Matrix& l, float a);
+C44Matrix operator+(const C44Matrix& l, const C44Matrix& r);
+C44Matrix operator+(const C44Matrix& l, float a);
+
+C44Matrix operator-(const C44Matrix& l, const C44Matrix& r);
+C44Matrix operator-(const C44Matrix& l, float a);
+
 C44Matrix operator*(const C44Matrix& l, const C44Matrix& r);
+C44Matrix operator*(const C44Matrix& l, float a);
+
+C44Matrix operator/(const C44Matrix& l, float a);
 
 #endif

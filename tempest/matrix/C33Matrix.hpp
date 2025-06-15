@@ -1,9 +1,10 @@
 #ifndef TEMPEST_MATRIX_C_33MATRIX_HPP
 #define TEMPEST_MATRIX_C_33MATRIX_HPP
 
-#include "tempest/vector/C2Vector.hpp"
-#include "tempest/vector/C3Vector.hpp"
+#include <cstdint>
 
+class C2Vector;
+class C3Vector;
 class C44Matrix;
 class C4Quaternion;
 
@@ -31,37 +32,11 @@ class C33Matrix {
 
     // Member functions
     C33Matrix() = default;
-    C33Matrix(const C3Vector& r0, const C3Vector& r1, const C3Vector& r2)
-        : a0(r0.x)
-        , a1(r0.y)
-        , a2(r0.z)
-        , b0(r1.x)
-        , b1(r1.y)
-        , b2(r1.z)
-        , c0(r2.x)
-        , c1(r2.y)
-        , c2(r2.z) {};
+    C33Matrix(const C3Vector& r0, const C3Vector& r1, const C3Vector& r2);
     explicit C33Matrix(const C44Matrix& m);
-    C33Matrix(float a0, float a1, float a2, float b0, float b1, float b2, float c0, float c1, float c2)
-        : a0(a0)
-        , a1(a1)
-        , a2(a2)
-        , b0(b0)
-        , b1(b1)
-        , b2(b2)
-        , c0(c0)
-        , c1(c1)
-        , c2(c2) {};
-    explicit C33Matrix(float a)
-        : a0(a)
-        , a1(a)
-        , a2(a)
-        , b0(a)
-        , b1(a)
-        , b2(a)
-        , c0(a)
-        , c1(a)
-        , c2(a) {};
+    explicit C33Matrix(const C4Quaternion& rotation);
+    C33Matrix(float a0, float a1, float a2, float b0, float b1, float b2, float c0, float c1, float c2);
+    explicit C33Matrix(float a);
 
     C33Matrix& operator+=(const C33Matrix& a);
     C33Matrix& operator-=(const C33Matrix& a);
@@ -91,8 +66,9 @@ class C33Matrix {
     C33Matrix AffineInverse(float a) const;
 };
 
-C33Matrix operator*(const C33Matrix& l, float a);
 C33Matrix operator*(const C33Matrix& l, const C33Matrix& r);
+C33Matrix operator*(const C33Matrix& l, float a);
+
 C33Matrix operator/(const C33Matrix& l, float a);
 
 #endif

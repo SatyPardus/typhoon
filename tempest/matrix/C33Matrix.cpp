@@ -1,5 +1,7 @@
 #include "tempest/matrix/C33Matrix.hpp"
 #include "tempest/math/CMath.hpp"
+#include "tempest/vector/C2Vector.hpp"
+#include "tempest/vector/C3Vector.hpp"
 #include "tempest/matrix/C44Matrix.hpp"
 #include "tempest/quaternion/C4Quaternion.hpp"
 
@@ -66,6 +68,18 @@ C33Matrix C33Matrix::Rotation(float angle, const C3Vector& axis, bool unit) {
     return result;
 }
 
+C33Matrix::C33Matrix(const C3Vector& r0, const C3Vector& r1, const C3Vector& r2)
+    : a0(r0.x)
+    , a1(r0.y)
+    , a2(r0.z)
+    , b0(r1.x)
+    , b1(r1.y)
+    , b2(r1.z)
+    , c0(r2.x)
+    , c1(r2.y)
+    , c2(r2.z) {
+}
+
 C33Matrix::C33Matrix(const C44Matrix& m)
     : a0(m.a0)
     , a1(m.a1)
@@ -76,6 +90,33 @@ C33Matrix::C33Matrix(const C44Matrix& m)
     , c0(m.c0)
     , c1(m.c1)
     , c2(m.c2) {
+}
+
+C33Matrix::C33Matrix(const C4Quaternion& rotation) {
+}
+
+C33Matrix::C33Matrix(float a0, float a1, float a2, float b0, float b1, float b2, float c0, float c1, float c2)
+    : a0(a0)
+    , a1(a1)
+    , a2(a2)
+    , b0(b0)
+    , b1(b1)
+    , b2(b2)
+    , c0(c0)
+    , c1(c1)
+    , c2(c2) {
+}
+
+C33Matrix::C33Matrix(float a)
+    : a0(a)
+    , a1(a)
+    , a2(a)
+    , b0(a)
+    , b1(a)
+    , b2(a)
+    , c0(a)
+    , c1(a)
+    , c2(a) {
 }
 
 C33Matrix& C33Matrix::operator+=(const C33Matrix& a) {
@@ -331,22 +372,6 @@ C33Matrix C33Matrix::AffineInverse(float a) const {
     return matrix;
 }
 
-C33Matrix operator*(const C33Matrix& l, float a) {
-    float a0 = l.a0 * a;
-    float a1 = l.a1 * a;
-    float a2 = l.a2 * a;
-
-    float b0 = l.b0 * a;
-    float b1 = l.b1 * a;
-    float b2 = l.b2 * a;
-
-    float c0 = l.c0 * a;
-    float c1 = l.c1 * a;
-    float c2 = l.c2 * a;
-
-    return { a0, a1, a2, b0, b1, b2, c0, c1, c2 };
-}
-
 C33Matrix operator*(const C33Matrix& l, const C33Matrix& r) {
     float a0 = l.a0 * r.a0 + l.a1 * r.b0 + l.a2 * r.c0;
     float a1 = l.a0 * r.a1 + l.a1 * r.b1 + l.a2 * r.c1;
@@ -363,18 +388,34 @@ C33Matrix operator*(const C33Matrix& l, const C33Matrix& r) {
     return { a0, a1, a2, b0, b1, b2, c0, c1, c2 };
 }
 
+C33Matrix operator*(const C33Matrix& l, float a) {
+    return {
+        l.a0 * a,
+        l.a1 * a,
+        l.a2 * a,
+
+        l.b0 * a,
+        l.b1 * a,
+        l.b2 * a,
+
+        l.c0 * a,
+        l.c1 * a,
+        l.c2 * a,
+    };
+}
+
 C33Matrix operator/(const C33Matrix& l, float a) {
-    float a0 = l.a0 / a;
-    float a1 = l.a1 / a;
-    float a2 = l.a2 / a;
+    return {
+        l.a0 / a,
+        l.a1 / a,
+        l.a2 / a,
 
-    float b0 = l.b0 / a;
-    float b1 = l.b1 / a;
-    float b2 = l.b2 / a;
+        l.b0 / a,
+        l.b1 / a,
+        l.b2 / a,
 
-    float c0 = l.c0 / a;
-    float c1 = l.c1 / a;
-    float c2 = l.c2 / a;
-
-    return { a0, a1, a2, b0, b1, b2, c0, c1, c2 };
+        l.c0 / a,
+        l.c1 / a,
+        l.c2 / a,
+    };
 }

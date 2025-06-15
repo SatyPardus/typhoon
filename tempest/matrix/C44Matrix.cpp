@@ -3,7 +3,7 @@
 #include "tempest/vector/C3Vector.hpp"
 #include "tempest/vector/C4Vector.hpp"
 #include "tempest/matrix/C33Matrix.hpp"
-#include "tempest/Quaternion.hpp"
+#include "tempest/quaternion/C4Quaternion.hpp"
 
 #include <storm/Error.hpp>
 
@@ -688,28 +688,100 @@ C44Matrix C44Matrix::AffineInverse() const {
     return matrix;
 }
 
-C44Matrix operator*(const C44Matrix& l, float a) {
-    float a0 = l.a0 * a;
-    float a1 = l.a1 * a;
-    float a2 = l.a2 * a;
-    float a3 = l.a3 * a;
+C44Matrix operator+(const C44Matrix& l, const C44Matrix& r) {
+    return {
+        l.a0 + r.a0,
+        l.a1 + r.a1,
+        l.a2 + r.a2,
+        l.a3 + r.a3,
 
-    float b0 = l.b0 * a;
-    float b1 = l.b1 * a;
-    float b2 = l.b2 * a;
-    float b3 = l.b3 * a;
+        l.b0 + r.b0,
+        l.b1 + r.b1,
+        l.b2 + r.b2,
+        l.b3 + r.b3,
 
-    float c0 = l.c0 * a;
-    float c1 = l.c1 * a;
-    float c2 = l.c2 * a;
-    float c3 = l.c3 * a;
+        l.c0 + r.c0,
+        l.c1 + r.c1,
+        l.c2 + r.c2,
+        l.c3 + r.c3,
 
-    float d0 = l.d0 * a;
-    float d1 = l.d1 * a;
-    float d2 = l.d2 * a;
-    float d3 = l.d3 * a;
+        l.d0 + r.d0,
+        l.d1 + r.d1,
+        l.d2 + r.d2,
+        l.d3 + r.d3
+    };
+}
 
-    return { a0, a1, a2, a3, b0, b1, b2, b3, c0, c1, c2, c3, d0, d1, d2, d3 };
+C44Matrix operator+(const C44Matrix& l, float a) {
+    return {
+        l.a0 + a,
+        l.a1 + a,
+        l.a2 + a,
+        l.a3 + a,
+
+        l.b0 + a,
+        l.b1 + a,
+        l.b2 + a,
+        l.b3 + a,
+
+        l.c0 + a,
+        l.c1 + a,
+        l.c2 + a,
+        l.c3 + a,
+
+        l.d0 + a,
+        l.d1 + a,
+        l.d2 + a,
+        l.d3 + a,
+    };
+}
+
+C44Matrix operator-(const C44Matrix& l, const C44Matrix& r) {
+    return {
+        l.a0 - r.a0,
+        l.a1 - r.a1,
+        l.a2 - r.a2,
+        l.a3 - r.a3,
+
+        l.b0 - r.b0,
+        l.b1 - r.b1,
+        l.b2 - r.b2,
+        l.b3 - r.b3,
+
+        l.c0 - r.c0,
+        l.c1 - r.c1,
+        l.c2 - r.c2,
+        l.c3 - r.c3,
+
+        l.d0 - r.d0,
+        l.d1 - r.d1,
+        l.d2 - r.d2,
+        l.d3 - r.d3
+    };
+}
+
+C44Matrix operator-(const C44Matrix& l, float a) {
+    return {
+        l.a0 - a,
+        l.a1 - a,
+        l.a2 - a,
+        l.a3 - a,
+
+        l.b0 - a,
+        l.b1 - a,
+        l.b2 - a,
+        l.b3 - a,
+
+        l.c0 - a,
+        l.c1 - a,
+        l.c2 - a,
+        l.c3 - a,
+
+        l.d0 - a,
+        l.d1 - a,
+        l.d2 - a,
+        l.d3 - a,
+    };
 }
 
 C44Matrix operator*(const C44Matrix& l, const C44Matrix& r) {
@@ -734,4 +806,52 @@ C44Matrix operator*(const C44Matrix& l, const C44Matrix& r) {
     float d3 = l.d0 * r.a3 + l.d1 * r.b3 + l.d2 * r.c3 + l.d3 * r.d3;
 
     return { a0, a1, a2, a3, b0, b1, b2, b3, c0, c1, c2, c3, d0, d1, d2, d3 };
+}
+
+C44Matrix operator*(const C44Matrix& l, float a) {
+    return {
+        l.a0 * a,
+        l.a1 * a,
+        l.a2 * a,
+        l.a3 * a,
+
+        l.b0 * a,
+        l.b1 * a,
+        l.b2 * a,
+        l.b3 * a,
+
+        l.c0 * a,
+        l.c1 * a,
+        l.c2 * a,
+        l.c3 * a,
+
+        l.d0 * a,
+        l.d1 * a,
+        l.d2 * a,
+        l.d3 * a,
+    };
+}
+
+C44Matrix operator/(const C44Matrix& l, float a) {
+    return {
+        l.a0 / a,
+        l.a1 / a,
+        l.a2 / a,
+        l.a3 / a,
+
+        l.b0 / a,
+        l.b1 / a,
+        l.b2 / a,
+        l.b3 / a,
+
+        l.c0 / a,
+        l.c1 / a,
+        l.c2 / a,
+        l.c3 / a,
+
+        l.d0 / a,
+        l.d1 / a,
+        l.d2 / a,
+        l.d3 / a,
+    };
 }
