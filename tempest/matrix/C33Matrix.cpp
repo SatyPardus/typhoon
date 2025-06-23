@@ -12,7 +12,49 @@ float C33Matrix::Det(float a, float b, float c, float d) {
     return (a * d) - (b * c);
 }
 
-C33Matrix C33Matrix::Rotation(float angle) {
+C33Matrix C33Matrix::RotationAroundX(float angle) {
+    float cosa = CMath::cos(angle);
+    float sina = CMath::sin(angle);
+
+    C33Matrix result;
+
+    result.a0 = 1.0f;
+    result.a1 = 0.0f;
+    result.a2 = 0.0f;
+
+    result.b0 = 0.0f;
+    result.b1 = cosa;
+    result.b2 = sina;
+
+    result.c0 = 0.0f;
+    result.c1 = -sina;
+    result.c2 = cosa;
+
+    return result;
+}
+
+C33Matrix C33Matrix::RotationAroundY(float angle) {
+    float cosa = CMath::cos(angle);
+    float sina = CMath::sin(angle);
+
+    C33Matrix result;
+
+    result.a0 = cosa;
+    result.a1 = 0.0f;
+    result.a2 = -sina;
+
+    result.b0 = 0.0f;
+    result.b1 = 1.0f;
+    result.b2 = 0.0f;
+
+    result.c0 = sina;
+    result.c1 = 0.0f;
+    result.c2 = cosa;
+
+    return result;
+}
+
+C33Matrix C33Matrix::RotationAroundZ(float angle) {
     float cosa = CMath::cos(angle);
     float sina = CMath::sin(angle);
 
@@ -20,17 +62,21 @@ C33Matrix C33Matrix::Rotation(float angle) {
 
     result.a0 = cosa;
     result.a1 = sina;
-    result.a2 = 0.0;
+    result.a2 = 0.0f;
 
     result.b0 = -sina;
     result.b1 = cosa;
-    result.b2 = 0.0;
+    result.b2 = 0.0f;
 
-    result.c0 = 0.0;
-    result.c1 = 0.0;
-    result.c2 = 1.0;
+    result.c0 = 0.0f;
+    result.c1 = 0.0f;
+    result.c2 = 1.0f;
 
     return result;
+}
+
+C33Matrix C33Matrix::Rotation(float angle) {
+    return C33Matrix::RotationAroundZ(angle);
 }
 
 C33Matrix C33Matrix::Rotation(float angle, const C3Vector& axis, bool unit) {
@@ -370,6 +416,98 @@ C33Matrix C33Matrix::AffineInverse(float a) const {
     C33Matrix matrix = this->Transpose();
     matrix.Scale(1.0f / (a * a));
     return matrix;
+}
+
+bool C33Matrix::ToEulerAnglesXYZ(float& xa_, float& ya_, float& za_) {
+    // TODO
+    throw;
+    return false;
+}
+
+bool C33Matrix::ToEulerAnglesXZY(float& xa_, float& za_, float& ya_) {
+    // TODO
+    throw;
+    return false;
+}
+
+bool C33Matrix::ToEulerAnglesYXZ(float& ya_, float& xa_, float& za_) {
+    // TODO
+    throw;
+    return false;
+}
+
+bool C33Matrix::ToEulerAnglesYZX(float& ya_, float& za_, float& xa_) {
+    // TODO
+    throw;
+    return false;
+}
+
+bool C33Matrix::ToEulerAnglesZXY(float& za_, float& xa_, float& ya_) {
+    // TODO
+    throw;
+    return false;
+}
+
+bool C33Matrix::ToEulerAnglesZYX(float& za_, float& ya_, float& xa_) {
+    // TODO
+    throw;
+    return false;
+}
+
+void C33Matrix::FromEulerAnglesXYZ(float yaw, float pitch, float roll) {
+    // TODO
+    throw;
+}
+
+void C33Matrix::FromEulerAnglesXZY(float yaw, float pitch, float roll) {
+    // TODO
+    throw;
+}
+
+void C33Matrix::FromEulerAnglesYXZ(float yaw, float pitch, float roll) {
+    // TODO
+    throw;
+}
+
+void C33Matrix::FromEulerAnglesYZX(float yaw, float pitch, float roll) {
+    // TODO
+    throw;
+}
+
+void C33Matrix::FromEulerAnglesZXY(float yaw, float pitch, float roll) {
+    // TODO
+    throw;
+}
+
+void C33Matrix::FromEulerAnglesZYX(float yaw, float pitch, float roll) {
+    float siny = CMath::sin(yaw);
+    float cosy = CMath::cos(yaw);
+
+    float sinp = CMath::sin(pitch);
+    float cosp = CMath::cos(pitch);
+
+    float sinr = CMath::sin(roll);
+    float cosr = CMath::cos(roll);
+
+    C33Matrix x_ = {
+        1.0f, 0.0f, 0.0f,
+        0.0f, cosr, -sinr,
+        0.0f, sinr, cosr
+    };
+
+    C33Matrix y_ = {
+        cosp, 0.0f, sinp,
+        0.0f, 1.0f, 0.0f,
+        -sinp, 0.0f, cosp
+    };
+
+    C33Matrix z_ = {
+        cosy, -siny, 0.0f,
+        siny, cosy, 0.0f,
+        0.0f, 0.0f, 1.0f
+    };
+
+    *this = (z_ * y_ * x_).Transpose();
 }
 
 C33Matrix operator*(const C33Matrix& l, const C33Matrix& r) {

@@ -16,6 +16,10 @@ class C33Matrix {
 
     // Static functions
     static float Det(float a, float b, float c, float d);
+    static C33Matrix RotationAroundX(float angle);
+    static C33Matrix RotationAroundY(float angle);
+    static C33Matrix RotationAroundZ(float angle);
+
     static C33Matrix Rotation(float angle);
     static C33Matrix Rotation(float angle, const C3Vector& axis, bool unit);
 
@@ -64,6 +68,19 @@ class C33Matrix {
     C33Matrix Inverse(float det) const;
     C33Matrix AffineInverse(const C3Vector& v) const;
     C33Matrix AffineInverse(float a) const;
+
+    bool ToEulerAnglesXYZ(float& xa_, float& ya_, float& za_);
+    bool ToEulerAnglesXZY(float& xa_, float& za_, float& ya_);
+    bool ToEulerAnglesYXZ(float& ya_, float& xa_, float& za_);
+    bool ToEulerAnglesYZX(float& ya_, float& za_, float& xa_);
+    bool ToEulerAnglesZXY(float& za_, float& xa_, float& ya_);
+    bool ToEulerAnglesZYX(float& za_, float& ya_, float& xa_);
+    void FromEulerAnglesXYZ(float yaw, float pitch, float roll);
+    void FromEulerAnglesXZY(float yaw, float pitch, float roll);
+    void FromEulerAnglesYXZ(float yaw, float pitch, float roll);
+    void FromEulerAnglesYZX(float yaw, float pitch, float roll);
+    void FromEulerAnglesZXY(float yaw, float pitch, float roll);
+    void FromEulerAnglesZYX(float yaw, float pitch, float roll);
 };
 
 C33Matrix operator*(const C33Matrix& l, const C33Matrix& r);
