@@ -61,6 +61,23 @@ class CMath {
         STORM_ASSERT(x >= 0.0f);
         return ::sqrt(x);
     }
+
+    static void normalize(float& x, float& y) {
+        float m = x * x + y * y;
+        STORM_ASSERT(m >= 0.0f);
+        m = 1.0f / CMath::sqrt(m);
+        x *= m;
+        y *= m;
+    }
+
+    static void normalize(float& x, float& y, float& z) {
+        float m = x * x + y * y + z * z;
+        STORM_ASSERT(m >= 0.0f);
+        m = 1.0f / CMath::sqrt(m);
+        x *= m;
+        y *= m;
+        z *= m;
+    }
 };
 
 #endif
