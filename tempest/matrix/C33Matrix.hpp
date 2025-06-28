@@ -5,6 +5,7 @@
 
 class C2Vector;
 class C3Vector;
+class C34Matrix;
 class C44Matrix;
 class C4Quaternion;
 
@@ -37,6 +38,7 @@ class C33Matrix {
     // Member functions
     C33Matrix() = default;
     C33Matrix(const C3Vector& r0, const C3Vector& r1, const C3Vector& r2);
+    explicit C33Matrix(const C34Matrix& m);
     explicit C33Matrix(const C44Matrix& m);
     explicit C33Matrix(const C4Quaternion& rotation);
     C33Matrix(float a0, float a1, float a2, float b0, float b1, float b2, float c0, float c1, float c2);

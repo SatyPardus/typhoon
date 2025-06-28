@@ -2,6 +2,7 @@
 #include "tempest/math/CMath.hpp"
 #include "tempest/vector/C2Vector.hpp"
 #include "tempest/vector/C3Vector.hpp"
+#include "tempest/matrix/C34Matrix.hpp"
 #include "tempest/matrix/C44Matrix.hpp"
 #include "tempest/quaternion/C4Quaternion.hpp"
 
@@ -126,6 +127,18 @@ C33Matrix::C33Matrix(const C3Vector& r0, const C3Vector& r1, const C3Vector& r2)
     , c2(r2.z) {
 }
 
+C33Matrix::C33Matrix(const C34Matrix& m)
+    : a0(m.a0)
+    , a1(m.a1)
+    , a2(m.a2)
+    , b0(m.b0)
+    , b1(m.b1)
+    , b2(m.b2)
+    , c0(m.c0)
+    , c1(m.c1)
+    , c2(m.c2) {
+}
+
 C33Matrix::C33Matrix(const C44Matrix& m)
     : a0(m.a0)
     , a1(m.a1)
@@ -139,6 +152,21 @@ C33Matrix::C33Matrix(const C44Matrix& m)
 }
 
 C33Matrix::C33Matrix(const C4Quaternion& rotation) {
+    float twox = 2.0f * rotation.x;
+    float twoy = 2.0f * rotation.y;
+    float twoz = 2.0f * rotation.z;
+
+    this->a0 = 1.0f - ((twoy * rotation.y) + (twoz * rotation.z));
+    this->a1 = (twoy * rotation.x) + (twoz * rotation.w);
+    this->a2 = (twoz * rotation.x) - (twoy * rotation.w);
+
+    this->b0 = (twoy * rotation.x) - (twoz * rotation.w);
+    this->b1 = 1.0f - ((twox * rotation.x) + (twoz * rotation.z));
+    this->b2 = (twoz * rotation.y) + (twox * rotation.w);
+
+    this->c0 = (twoz * rotation.x) + (twoy * rotation.w);
+    this->c1 = (twoz * rotation.y) - (twox * rotation.w);
+    this->c2 = 1.0f - ((twox * rotation.x) + (twoy * rotation.y));
 }
 
 C33Matrix::C33Matrix(float a0, float a1, float a2, float b0, float b1, float b2, float c0, float c1, float c2)
