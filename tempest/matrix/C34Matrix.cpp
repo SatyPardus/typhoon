@@ -2,6 +2,7 @@
 #include "tempest/vector/C3Vector.hpp"
 #include "tempest/matrix/C33Matrix.hpp"
 #include "tempest/quaternion/C4Quaternion.hpp"
+#include "tempest/math/CMath.hpp"
 
 
 C34Matrix C34Matrix::Rotation(float angle, const C3Vector& axis, bool unit) {
