@@ -4,6 +4,7 @@
 #include "tempest/vector/C2Vector.hpp"
 #include "tempest/vector/CImVector.hpp"
 
+class C33Matrix;
 class C44Matrix;
 
 class C3Vector {
@@ -63,7 +64,7 @@ class C3Vector {
     C3Vector& operator/=(float a);
     C3Vector& operator/=(const C3Vector& a);
 
-    C3Vector operator-();
+    C3Vector operator-() const;
 
     float& operator[](uint32_t sub);
     const float& operator[](uint32_t sub) const;
@@ -85,6 +86,7 @@ C3Vector operator-(const C3Vector& l, const C3Vector& r);
 
 C3Vector operator*(const C3Vector& l, float r);
 C3Vector operator*(float l, const C3Vector& r);
+C3Vector operator*(const C3Vector& l, const C33Matrix& r);
 C3Vector operator*(const C3Vector& l, const C44Matrix& r);
 
 bool operator==(const C3Vector& l, const C3Vector& r);

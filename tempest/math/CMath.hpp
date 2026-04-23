@@ -8,9 +8,11 @@
 class CMath {
     public:
     // Static variables
-    static constexpr float PI = 3.1415927f;
-    static constexpr float TWO_PI = 6.2831855f;
-    static constexpr float OO_TWO_PI = 1.0f / TWO_PI;
+    static const float PI;
+    static const float TWO_PI;
+    static const float OO_TWO_PI;
+    static const float EPSILON;
+    static const float DEG2RAD;
 
     // Static functions
     static float acos(float x) {
@@ -18,23 +20,19 @@ class CMath {
     }
 
     static float cos(float x) {
-        return ::cosf(x);
-    }
-
-    static float sin(float x) {
-        return ::sinf(x);
+        return std::cos(x);
     }
 
     static float fabs(float x) {
-        return ::fabs(x);
+        return std::fabs(x);
+    }
+
+    static bool fequal(float a, float b) {
+        return CMath::fequalz(a, b, EPSILON);
     }
 
     static bool fequalz(float a, float b, float z) {
         return z > CMath::fabs(a - b);
-    }
-
-    static bool fequal(float a, float b) {
-        return CMath::fequalz(a, b, 0.00000023841858f);
     }
 
     static int32_t fint(float n) {
@@ -43,6 +41,14 @@ class CMath {
 
     static int32_t fint_n(float n) {
         return n <= 0.0f ? static_cast<int32_t>(n - 0.5f) : static_cast<int32_t>(n + 0.5f);
+    }
+
+    static bool fnotequal(float a, float b) {
+        return !CMath::fequal(a, b);
+    }
+
+    static bool fnotequalz(float a, float b, float z) {
+        return !CMath::fequalz(a, b, z);
     }
 
     static uint32_t fuint(float n) {
@@ -57,26 +63,67 @@ class CMath {
         return static_cast<uint32_t>(n + 0.99994999);
     }
 
+    static float hypotinv(float x, float y) {
+        float s = (x * x) + (y * y);
+        STORM_ASSERT(s >= 0.0f);
+
+        return CMath::sqrtinv(s);
+    }
+
+    static float hypotinv(float x, float y, float z) {
+        float s = (x * x) + (y * y) + (z * z);
+        STORM_ASSERT(s >= 0.0f);
+
+        return CMath::sqrtinv(s);
+    }
+
+    static uint32_t mulhwu(uint32_t x, uint32_t y) {
+        return (y * static_cast<uint64_t>(x)) >> 32;
+    }
+
+    static void normalize(float& x, float& y) {
+        auto hi = CMath::hypotinv(x, y);
+
+        x *= hi;
+        y *= hi;
+    }
+
+    static void normalize(float& x, float& y, float& z) {
+        auto hi = CMath::hypotinv(x, y, z);
+
+        x *= hi;
+        y *= hi;
+        z *= hi;
+    }
+
+    static float normalizeangle0to2pi(float angle) {
+        angle = fmodf(angle, TWO_PI);
+        return angle < 0.0f ? angle + TWO_PI : angle;
+    }
+
+    static uint32_t rotl3(uint32_t v) {
+        return (v << 3) | (v >> 29);
+    }
+
+    static uint32_t rotl2(uint32_t v) {
+        return (v << 2) | (v >> 30);
+    }
+
+    static uint32_t rotl1(uint32_t v) {
+        return (v << 1) | (v >> 31);
+    }
+
+    static float sin(float x) {
+        return std::sin(x);
+    }
+
     static float sqrt(float x) {
         STORM_ASSERT(x >= 0.0f);
         return ::sqrt(x);
     }
 
-    static void normalize(float& x, float& y) {
-        float m = x * x + y * y;
-        STORM_ASSERT(m >= 0.0f);
-        m = 1.0f / CMath::sqrt(m);
-        x *= m;
-        y *= m;
-    }
-
-    static void normalize(float& x, float& y, float& z) {
-        float m = x * x + y * y + z * z;
-        STORM_ASSERT(m >= 0.0f);
-        m = 1.0f / CMath::sqrt(m);
-        x *= m;
-        y *= m;
-        z *= m;
+    static float sqrtinv(float x) {
+        return 1.0f / ::sqrt(x);
     }
 };
 
