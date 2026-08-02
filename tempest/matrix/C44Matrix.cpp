@@ -1,35 +1,45 @@
 #include "tempest/matrix/C44Matrix.hpp"
 #include "tempest/math/CMath.hpp"
-#include "tempest/vector/C3Vector.hpp"
 #include "tempest/matrix/C33Matrix.hpp"
 #include "tempest/quaternion/C4Quaternion.hpp"
-
+#include "tempest/vector/C3Vector.hpp"
 #include <storm/Error.hpp>
-
 
 float C44Matrix::Det(float a, float b, float c, float d, float e, float f, float g, float h, float i) {
     return (b * f * g) + (c * d * h) + (a * e * i) - (c * e * g) - (b * d * i) - (a * f * h);
 }
 
-C44Matrix C44Matrix::RotationAroundZ(float angle) {
-    float cosa = CMath::cos(angle);
+C44Matrix C44Matrix::Rotation(float angle, const C3Vector& axis, bool unit) {
+    C3Vector axis_ = axis;
+    if (!unit) {
+        axis_.Normalize();
+    }
+    STORM_ASSERT(axis_.IsUnit());
+
     float sina = CMath::sin(angle);
+    float cosa = CMath::cos(angle);
+
+    float xs = axis_.x * sina;
+    float ys = axis_.y * sina;
+    float zs = axis_.z * sina;
+
+    float one_c = 1.0f - cosa;
 
     C44Matrix result;
 
-    result.a0 = cosa;
-    result.a1 = sina;
-    result.a2 = 0.0f;
+    result.a0 = axis_.x * axis_.x * one_c + cosa;
+    result.a1 = axis_.x * axis_.y * one_c + zs;
+    result.a2 = axis_.x * axis_.z * one_c - ys;
     result.a3 = 0.0f;
 
-    result.b0 = -sina;
-    result.b1 = cosa;
-    result.b2 = 0.0f;
+    result.b0 = axis_.x * axis_.y * one_c - zs;
+    result.b1 = axis_.y * axis_.y * one_c + cosa;
+    result.b2 = axis_.y * axis_.z * one_c + xs;
     result.b3 = 0.0f;
 
-    result.c0 = 0.0f;
-    result.c1 = 0.0f;
-    result.c2 = 1.0f;
+    result.c0 = axis_.x * axis_.z * one_c + ys;
+    result.c1 = axis_.y * axis_.z * one_c - xs;
+    result.c2 = axis_.z * axis_.z * one_c + cosa;
     result.c3 = 0.0f;
 
     result.d0 = 0.0f;
@@ -38,6 +48,33 @@ C44Matrix C44Matrix::RotationAroundZ(float angle) {
     result.d3 = 1.0f;
 
     return result;
+}
+
+C44Matrix C44Matrix::RotationAroundZ(float angle) {
+    float cosAngle = cos(angle);
+    float sinAngle = sin(angle);
+
+    float a0 = cosAngle;
+    float a1 = sinAngle;
+    float a2 = 0.0f;
+    float a3 = 0.0f;
+
+    float b0 = -sinAngle;
+    float b1 = cosAngle;
+    float b2 = 0.0f;
+    float b3 = 0.0f;
+
+    float c0 = 0.0f;
+    float c1 = 0.0f;
+    float c2 = 1.0f;
+    float c3 = 0.0f;
+
+    float d0 = 0.0f;
+    float d1 = 0.0f;
+    float d2 = 0.0f;
+    float d3 = 1.0f;
+
+    return { a0, a1, a2, a3, b0, b1, b2, b3, c0, c1, c2, c3, d0, d1, d2, d3 };
 }
 
 C44Matrix C44Matrix::RotationAroundY(float angle) {
@@ -88,47 +125,6 @@ C44Matrix C44Matrix::RotationAroundX(float angle) {
     result.c0 = 0.0f;
     result.c1 = -sina;
     result.c2 = cosa;
-    result.c3 = 0.0f;
-
-    result.d0 = 0.0f;
-    result.d1 = 0.0f;
-    result.d2 = 0.0f;
-    result.d3 = 1.0f;
-
-    return result;
-}
-
-C44Matrix C44Matrix::Rotation(float angle, const C3Vector& axis, bool unit) {
-    C3Vector axis_ = axis;
-    if (!unit) {
-        axis_.Normalize();
-    }
-    STORM_ASSERT(axis_.IsUnit());
-
-    float sina = CMath::sin(angle);
-    float cosa = CMath::cos(angle);
-
-    float xs = axis_.x * sina;
-    float ys = axis_.y * sina;
-    float zs = axis_.z * sina;
-
-    float one_c = 1.0f - cosa;
-
-    C44Matrix result;
-
-    result.a0 = axis_.x * axis_.x * one_c + cosa;
-    result.a1 = axis_.x * axis_.y * one_c + zs;
-    result.a2 = axis_.x * axis_.z * one_c - ys;
-    result.a3 = 0.0f;
-
-    result.b0 = axis_.x * axis_.y * one_c - zs;
-    result.b1 = axis_.y * axis_.y * one_c + cosa;
-    result.b2 = axis_.y * axis_.z * one_c + xs;
-    result.b3 = 0.0f;
-
-    result.c0 = axis_.x * axis_.z * one_c + ys;
-    result.c1 = axis_.y * axis_.z * one_c - xs;
-    result.c2 = axis_.z * axis_.z * one_c + cosa;
     result.c3 = 0.0f;
 
     result.d0 = 0.0f;
@@ -318,195 +314,7 @@ C44Matrix C44Matrix::AffineInverse(float uniformScale) const {
     matrix.Scale(1.0f / (uniformScale * uniformScale));
     matrix.Translate(C3Vector(-this->d0, -this->d1, -this->d2));
 
-    this->b0 /= a;
-    this->b1 /= a;
-    this->b2 /= a;
-    this->b3 /= a;
-
-    this->c0 /= a;
-    this->c1 /= a;
-    this->c2 /= a;
-    this->c3 /= a;
-
-    this->d0 /= a;
-    this->d1 /= a;
-    this->d2 /= a;
-    this->d3 /= a;
-
-    return *this;
-}
-
-void C44Matrix::Zero() {
-    this->a0 = 0.0f;
-    this->a1 = 0.0f;
-    this->a2 = 0.0f;
-    this->a3 = 0.0f;
-
-    this->b0 = 0.0f;
-    this->b1 = 0.0f;
-    this->b2 = 0.0f;
-    this->b3 = 0.0f;
-
-    this->c0 = 0.0f;
-    this->c1 = 0.0f;
-    this->c2 = 0.0f;
-    this->c3 = 0.0f;
-
-    this->d0 = 0.0f;
-    this->d1 = 0.0f;
-    this->d2 = 0.0f;
-    this->d3 = 0.0f;
-}
-
-void C44Matrix::Identity() {
-    this->a0 = 1.0f;
-    this->a1 = 0.0f;
-    this->a2 = 0.0f;
-    this->a3 = 0.0f;
-
-    this->b0 = 0.0f;
-    this->b1 = 1.0f;
-    this->b2 = 0.0f;
-    this->b3 = 0.0f;
-
-    this->c0 = 0.0f;
-    this->c1 = 0.0f;
-    this->c2 = 1.0f;
-    this->c3 = 0.0f;
-
-    this->d0 = 0.0f;
-    this->d1 = 0.0f;
-    this->d2 = 0.0f;
-    this->d3 = 1.0f;
-}
-
-float C44Matrix::Trace() {
-    return this->a0 + this->b1 + this->c2 + this->d3;
-}
-
-void C44Matrix::Translate(const C3Vector& move) {
-    this->d0 = this->a0 * move.x + this->b0 * move.y + this->c0 * move.z + this->d0;
-    this->d1 = this->a1 * move.x + this->b1 * move.y + this->c1 * move.z + this->d1;
-    this->d2 = this->a2 * move.x + this->b2 * move.y + this->c2 * move.z + this->d2;
-}
-
-void C44Matrix::Scale(float scale) {
-    this->a0 *= scale;
-    this->a1 *= scale;
-    this->a2 *= scale;
-
-    this->b0 *= scale;
-    this->b1 *= scale;
-    this->b2 *= scale;
-
-    this->c0 *= scale;
-    this->c1 *= scale;
-    this->c2 *= scale;
-}
-
-void C44Matrix::Scale(const C3Vector& scale) {
-    this->a0 *= scale.x;
-    this->a1 *= scale.x;
-    this->a2 *= scale.x;
-
-    this->b0 *= scale.y;
-    this->b1 *= scale.y;
-    this->b2 *= scale.y;
-
-    this->c0 *= scale.z;
-    this->c1 *= scale.z;
-    this->c2 *= scale.z;
-}
-
-void C44Matrix::RotateAroundZ(float angle) {
-    *this = C44Matrix::RotationAroundZ(angle) * (*this);
-}
-
-void C44Matrix::RotateAroundY(float angle) {
-    *this = C44Matrix::RotationAroundY(angle) * (*this);
-}
-
-void C44Matrix::RotateAroundX(float angle) {
-    *this = C44Matrix::RotationAroundX(angle) * (*this);
-}
-
-void C44Matrix::Rotate(const C4Quaternion& rotation) {
-    *this = C44Matrix(rotation) * (*this);
-}
-
-void C44Matrix::Rotate(float angle, const C3Vector& axis, bool unit) {
-    *this = C44Matrix::Rotation(angle, axis, unit) * (*this);
-}
-
-C44Matrix C44Matrix::Transpose() const {
-    return {
-        this->a0,
-        this->b0,
-        this->c0,
-        this->d0,
-        this->a1,
-        this->b1,
-        this->c1,
-        this->d1,
-        this->a2,
-        this->b2,
-        this->c2,
-        this->d2,
-        this->a3,
-        this->b3,
-        this->c3,
-        this->d3
-    };
-}
-
-float C44Matrix::Determinant() const {
-    float v2;
-    float v3;
-    float v4;
-
-    v2 = this->a0 * C44Matrix::Det(
-        this->b1,
-        this->b2,
-        this->b3,
-        this->c1,
-        this->c2,
-        this->c3,
-        this->d1,
-        this->d2,
-        this->d3);
-
-    v3 = v2 - this->a1 * C44Matrix::Det(
-        this->b0,
-        this->b2,
-        this->b3,
-        this->c0,
-        this->c2,
-        this->c3,
-        this->d0,
-        this->d2,
-        this->d3);
-
-    v4 = v3 + this->a2 * C44Matrix::Det(
-        this->b0,
-        this->b1,
-        this->b3,
-        this->c0,
-        this->c1,
-        this->c3,
-        this->d0,
-        this->d1,
-        this->d3);
-
-    return v4 - this->a3 * C44Matrix::Det(
-        this->b0,
-        this->b1,
-        this->b2,
-        this->c0,
-        this->c1,
-        this->c2,
-        this->d0,
-        this->d1,
-        this->d2);
+    return matrix;
 }
 
 C44Matrix C44Matrix::Cofactors() const {
@@ -734,6 +542,14 @@ void C44Matrix::Rotate(float angle, const C3Vector& axis, bool unit) {
 
 void C44Matrix::RotateAroundZ(float angle) {
     *this = C44Matrix::RotationAroundZ(angle) * (*this);
+}
+
+void C44Matrix::RotateAroundY(float angle) {
+    *this = C44Matrix::RotationAroundY(angle) * (*this);
+}
+
+void C44Matrix::RotateAroundX(float angle) {
+    *this = C44Matrix::RotationAroundX(angle) * (*this);
 }
 
 C4Vector C44Matrix::Row0() const {

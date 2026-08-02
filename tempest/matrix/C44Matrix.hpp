@@ -49,24 +49,10 @@ class C44Matrix {
     explicit C44Matrix(const C4Quaternion& rotation);
     explicit C44Matrix(float a);
 
-    C44Matrix Adjoint() const;
-    C44Matrix AffineInverse() const;
-    C44Matrix AffineInverse(const C3Vector& v) const;
-    C44Matrix AffineInverse(float uniformScale) const;
-    C44Matrix Cofactors() const;
-
     C4Vector Col0() const;
     C4Vector Col1() const;
     C4Vector Col2() const;
     C4Vector Col3() const;
-
-    float Determinant() const;
-    void Identity();
-    C44Matrix Inverse() const;
-    C44Matrix Inverse(float det) const;
-    void Rotate(const C4Quaternion& rotation);
-    void Rotate(float angle, const C3Vector& axis, bool unit);
-    void RotateAroundZ(float angle);
 
     C4Vector Row0() const;
     const C3Vector* Row0AsVec3() const;
@@ -76,13 +62,6 @@ class C44Matrix {
     const C3Vector* Row2AsVec3() const;
     C4Vector Row3() const;
     const C3Vector* Row3AsVec3() const;
-
-    void Scale(const C3Vector& scale);
-    void Scale(float scale);
-    float Trace();
-    void Translate(const C3Vector& move);
-    C44Matrix Transpose() const;
-    void Zero();
 
     C44Matrix& operator+=(const C44Matrix& a);
     C44Matrix& operator-=(const C44Matrix& a);
