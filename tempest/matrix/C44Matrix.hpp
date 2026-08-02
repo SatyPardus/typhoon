@@ -18,8 +18,10 @@ class C44Matrix {
 
     // Static functions
     static float Det(float a, float b, float c, float d, float e, float f, float g, float h, float i);
-    static C44Matrix Rotation(float angle, const C3Vector& axis, bool unit);
     static C44Matrix RotationAroundZ(float angle);
+    static C44Matrix RotationAroundY(float angle);
+    static C44Matrix RotationAroundX(float angle);
+    static C44Matrix Rotation(float angle, const C3Vector& axis, bool unit);
 
     // Member variables
     float a0 = 1.0f;
@@ -87,6 +89,27 @@ class C44Matrix {
     C44Matrix& operator*=(float a);
     C44Matrix& operator*=(const C44Matrix& a);
     C44Matrix& operator/=(float a);
+
+    void Zero();
+    void Identity();
+    float Trace();
+    void Translate(const C3Vector& move);
+    void Scale(float scale);
+    void Scale(const C3Vector& scale);
+    void RotateAroundZ(float angle);
+    void RotateAroundY(float angle);
+    void RotateAroundX(float angle);
+    void Rotate(const C4Quaternion& rotation);
+    void Rotate(float angle, const C3Vector& axis, bool unit);
+    C44Matrix Transpose() const;
+    float Determinant() const;
+    C44Matrix Cofactors() const;
+    C44Matrix Adjoint() const;
+    C44Matrix Inverse() const;
+    C44Matrix Inverse(float det) const;
+    C44Matrix AffineInverse(const C3Vector& v) const;
+    C44Matrix AffineInverse(float a) const;
+    C44Matrix AffineInverse() const;
 };
 
 C44Matrix operator+(const C44Matrix& l, const C44Matrix& r);

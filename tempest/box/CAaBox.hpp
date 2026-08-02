@@ -8,6 +8,8 @@ class CAaBox {
     // Member variables
     C3Vector b;
     C3Vector t;
+
+    static CAaBox Bounding(const C3Vector* vectors, uint32_t vectorsCount);
 };
 
 #endif

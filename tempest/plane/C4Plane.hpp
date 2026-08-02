@@ -10,6 +10,7 @@ class C4Plane {
     float d = 0.0f;
 
     C4Plane() = default;
+    void From3Pos(const C3Vector& a, const C3Vector& b, const C3Vector& c);
 };
 
 #endif

@@ -2,6 +2,7 @@
 #define TEMPEST_VECTOR_C_3VECTOR_HPP
 
 #include "tempest/vector/C2Vector.hpp"
+#include "tempest/vector/C4Vector.hpp"
 #include "tempest/vector/CImVector.hpp"
 
 class C33Matrix;
@@ -39,6 +40,10 @@ class C3Vector {
         : x(a.x)
         , y(a.y)
         , z(0.0f) {};
+    C3Vector(const C4Vector& a)
+        : x(a.x)
+        , y(a.y)
+        , z(a.z) {};
     C3Vector(const CImVector& color)
         : x(color.r / 255.0f)
         , y(color.g / 255.0f)

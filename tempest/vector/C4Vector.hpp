@@ -1,6 +1,8 @@
 #ifndef TEMPEST_VECTOR_C_4VECTOR_HPP
 #define TEMPEST_VECTOR_C_4VECTOR_HPP
 
+#include "tempest/Matrix.hpp"
+
 class C4Vector {
     public:
     // Member variables
@@ -17,5 +19,7 @@ class C4Vector {
         , z(z)
         , w(w) {};
 };
+
+C4Vector operator*(const C4Vector& l, const C44Matrix& r);
 
 #endif

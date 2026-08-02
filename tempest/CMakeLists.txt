@@ -6,6 +6,8 @@ file(GLOB TEMPEST_SOURCES
     "random/*.cpp"
     "rect/*.cpp"
     "vector/*.cpp"
+    "plane/*.cpp"
+    "box/*.cpp"
 )
 
 add_library(tempest STATIC
