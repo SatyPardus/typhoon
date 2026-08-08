@@ -622,6 +622,14 @@ void C44Matrix::Translate(const C3Vector& move) {
     this->d2 = this->a2 * move.x + this->b2 * move.y + this->c2 * move.z + this->d2;
 }
 
+C3Vector C44Matrix::TransformPoint(const C3Vector& point) {
+    C3Vector vec;
+    vec.x = this->a0 * point.x + this->b0 * point.y + this->c0 * point.z + this->d0;
+    vec.y = this->a1 * point.x + this->b1 * point.y + this->c1 * point.z + this->d1;
+    vec.z = this->a2 * point.x + this->b2 * point.y + this->c2 * point.z + this->d2;
+    return vec;
+}
+
 C44Matrix C44Matrix::Transpose() const {
     float a0 = this->a0;
     float a1 = this->a1;

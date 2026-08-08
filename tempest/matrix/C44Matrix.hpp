@@ -73,6 +73,7 @@ class C44Matrix {
     void Identity();
     float Trace();
     void Translate(const C3Vector& move);
+    C3Vector TransformPoint(const C3Vector& point);
     void Scale(float scale);
     void Scale(const C3Vector& scale);
     void RotateAroundZ(float angle);

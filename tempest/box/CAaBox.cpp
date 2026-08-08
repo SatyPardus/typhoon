@@ -34,3 +34,27 @@ CAaBox CAaBox::Bounding(const C3Vector* vectors, uint32_t vectorsCount) {
 
     return box;
 }
+
+float CAaBox::DistanceSqXY(C2Vector& pos) {
+    float clampedX;
+    float diffX;
+    float diffY;
+
+    if (this->b.x > pos.x)
+        clampedX = this->b.x;
+    else if (this->t.x >= pos.x)
+        clampedX = pos.x;
+    else
+        clampedX = this->t.x;
+
+    diffX = clampedX - pos.x;
+
+    if (this->b.y > pos.y)
+        diffY = this->b.y - pos.y;
+    else if (this->t.y >= pos.y)
+        diffY = pos.y - pos.y;
+    else
+        diffY = this->t.y - pos.y;
+
+    return diffX * diffX + diffY * diffY;
+}
