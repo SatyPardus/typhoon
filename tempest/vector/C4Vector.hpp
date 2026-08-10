@@ -3,6 +3,8 @@
 
 #include "tempest/Matrix.hpp"
 
+class C3Vector;
+
 class C4Vector {
     public:
     // Member variables
@@ -18,6 +20,7 @@ class C4Vector {
         , y(y)
         , z(z)
         , w(w) {};
+    C4Vector(C3Vector v);
 };
 
 C4Vector operator*(const C4Vector& l, const C44Matrix& r);

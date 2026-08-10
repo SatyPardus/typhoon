@@ -1,4 +1,12 @@
 #include "tempest/vector/C4Vector.hpp"
+#include "tempest/vector/C3Vector.hpp"
+
+C4Vector::C4Vector(C3Vector vec) {
+    this->x = vec.x;
+    this->y = vec.y;
+    this->z = vec.z;
+    this->w = 0;
+}
 
 C4Vector operator*(const C4Vector& l, const C44Matrix& r) {
     float x = r.a0 * l.x + r.b0 * l.y + r.c0 * l.z + r.d0 * l.w;
