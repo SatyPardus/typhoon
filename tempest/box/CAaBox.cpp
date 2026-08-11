@@ -1,5 +1,9 @@
 #include "tempest/box/CAaBox.hpp"
 
+static inline float clampf(float v, float lo, float hi) {
+    return v < lo ? lo : (hi < v ? hi : v);
+}
+
 // OFFSET: 0x984930
 CAaBox CAaBox::Bounding(const C3Vector* vectors, uint32_t vectorsCount) {
     CAaBox box;
@@ -57,4 +61,12 @@ float CAaBox::DistanceSqXY(C2Vector& pos) {
         diffY = this->t.y - pos.y;
 
     return diffX * diffX + diffY * diffY;
+}
+
+float CAaBox::DistanceSq(C3Vector& p) {
+    const float dx = p.x - clampf(p.x, b.x, t.x);
+    const float dy = p.y - clampf(p.y, b.y, t.y);
+    const float dz = p.z - clampf(p.z, b.z, t.z);
+
+    return dx * dx + dy * dy + dz * dz;
 }

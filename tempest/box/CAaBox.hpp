@@ -10,6 +10,7 @@ class CAaBox {
     C3Vector t;
 
     float DistanceSqXY(C2Vector& pos);
+    float DistanceSq(C3Vector& pos);
 
     static CAaBox Bounding(const C3Vector* vectors, uint32_t vectorsCount);
 };
