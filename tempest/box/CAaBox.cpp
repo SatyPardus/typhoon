@@ -70,3 +70,12 @@ float CAaBox::DistanceSq(C3Vector& p) {
 
     return dx * dx + dy * dy + dz * dz;
 }
+
+bool CAaBox::Intersects(CAaBox* other) {
+    return this->t.x >= other->b.x
+        && this->t.y >= other->b.y
+        && this->t.z >= other->b.z
+        && this->b.x <= other->t.x
+        && this->b.y <= other->t.y
+        && this->b.z <= other->t.z;
+}
