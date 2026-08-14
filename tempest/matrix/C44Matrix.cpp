@@ -630,6 +630,16 @@ C3Vector C44Matrix::TransformPoint(const C3Vector& point) {
     return vec;
 }
 
+// OFFSET: 0x4C2270
+C4Vector C44Matrix::TransformPoint(const C4Vector& point) {
+    C4Vector vec;
+    vec.x = this->d0 * point.w + this->b0 * point.y + this->c0 * point.z + this->a0 * point.x;
+    vec.y = this->d1 * point.w + this->b1 * point.y + this->a1 * point.x + this->c1 * point.z;
+    vec.z = this->d2 * point.w + this->b2 * point.y + this->a2 * point.x + this->c2 * point.z;
+    vec.w = this->d3 * point.w + this->b3 * point.y + this->a3 * point.x + this->c3 * point.z;
+    return vec;
+}
+
 C44Matrix C44Matrix::Transpose() const {
     float a0 = this->a0;
     float a1 = this->a1;
