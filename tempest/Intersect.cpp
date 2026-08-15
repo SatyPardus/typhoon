@@ -1,4 +1,6 @@
 #include "tempest/Intersect.hpp"
+#include "tempest/plane/C4Plane.hpp"
+#include <cmath>
 
 namespace {
     struct ProjectedAxes {
@@ -58,7 +60,7 @@ bool NTempest::Intersect(const C3Vector& point, const C3Vector* verts, uint32_t 
 }
 
 // OFFSET: 0x9836B0
-bool NTempest::Intersect(const CRay* ray, const C3Vector* verts, const int idx[3], float* outT, float* outUV, float eps) {
+bool NTempest::Intersect(const CRay* ray, const C3Vector* verts, uint16_t* idx, float* outT, float* outUV, float eps) {
     const float lo = -eps;
     const float hi = 1.0f + eps;
 
@@ -111,4 +113,37 @@ bool NTempest::Intersect(const CRay* ray, const C3Vector* verts, const int idx[3
     }
 
     return true;
+}
+
+// OFFSET: 0x982FB0
+bool NTempest::Intersect(CRay& ray, C4Plane& plane, float* hitT, C3Vector* hitPoint, float tollerance) {
+    auto v5 = ray.dir.y * plane.n.y + ray.dir.z * plane.n.z + plane.n.x * ray.dir.x;
+    if (fabs(v5) >= 0.0001) {
+        if (hitT || hitPoint) {
+            float v8 = 0.0f;
+            auto v7 = ray.origin.x * plane.n.x + plane.n.z * ray.origin.z + plane.n.y * ray.origin.y + plane.d;
+            if (fabs(v7) >= tollerance)
+                v8 = -(v7 / v5);
+            if (hitT)
+                *hitT = v8;
+            if (hitPoint) {
+                C3Vector v9;
+                v9.x = v8 * ray.dir.x + ray.origin.x;
+                v9.y = ray.dir.y * v8 + ray.origin.y;
+                v9.z = v8 * ray.dir.z + ray.origin.z;
+                *hitPoint = v9;
+                return 1;
+            }
+        }
+    } else {
+        if (fabs(ray.origin.y * plane.n.y + ray.origin.z * plane.n.z + ray.origin.x * plane.n.x + plane.d) >= tollerance)
+            return 0;
+        if (hitT)
+            *hitT = 0.0;
+        if (hitPoint) {
+            *hitPoint = ray.origin;
+            return 1;
+        }
+    }
+    return 1;
 }
