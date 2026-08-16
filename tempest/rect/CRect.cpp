@@ -28,6 +28,22 @@ bool CRect::Sub4826D0() const {
     return this->maxY < 0.0f || this->minY > 1.0f || this->maxX < 0.0f || this->minX > 1.0f;
 }
 
+// OFFSET: 0x78F2F0
+CRect CRect::Union(const CRect& r) {
+    float maxX = (r.maxX >= this->maxX) ? r.maxX : this->maxX;
+    float maxY = (r.maxY >= this->maxY) ? r.maxY : this->maxY;
+    float minX = (r.minX <= this->minX) ? r.minX : this->minX;
+    float minY = (r.minY <= this->minY) ? r.minY : this->minY;
+
+    CRect result;
+    result.minY = minY;
+    result.minX = minX;
+    result.maxY = maxY;
+    result.maxX = maxX;
+
+    return result;
+}
+
 // OFFSET: 0x7A6DD0
 CRect& CRect::operator/=(const CRect& a) {
     this->minY /= a.minY;

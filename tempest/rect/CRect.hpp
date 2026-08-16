@@ -25,6 +25,7 @@ class CRect {
     bool IsPointInside(const C2Vector& pt);
     bool Sub4826D0() const;
     bool Intersects(const CRect& r) const;
+    CRect Union(const CRect& r);
 
     CRect& operator/=(const CRect& a);
 };
