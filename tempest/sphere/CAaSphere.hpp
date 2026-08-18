@@ -7,7 +7,9 @@ class CAaSphere {
     public:
     // Member variables
     C3Vector c;
-    float r;
+    float r = 0.0f;
+
+    CAaSphere() = default;
 };
 
 #endif
