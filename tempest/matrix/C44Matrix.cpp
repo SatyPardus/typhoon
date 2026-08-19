@@ -3,6 +3,7 @@
 #include "tempest/matrix/C33Matrix.hpp"
 #include "tempest/quaternion/C4Quaternion.hpp"
 #include "tempest/vector/C3Vector.hpp"
+#include "tempest/box/CAaBox.hpp"
 #include <storm/Error.hpp>
 
 float C44Matrix::Det(float a, float b, float c, float d, float e, float f, float g, float h, float i) {
@@ -638,6 +639,40 @@ C4Vector C44Matrix::TransformPoint(const C4Vector& point) {
     vec.z = this->d2 * point.w + this->b2 * point.y + this->a2 * point.x + this->c2 * point.z;
     vec.w = this->d3 * point.w + this->b3 * point.y + this->a3 * point.x + this->c3 * point.z;
     return vec;
+}
+
+// OFFSET: 0x984860
+CAaBox C44Matrix::Transform(CAaBox& box) {
+    CAaBox out;
+    out.b.x = this->d0;
+    out.b.y = this->d1;
+    out.b.z = this->d2;
+    out.t = out.b;
+
+    const float* basis = &this->a0;
+
+    for (int i = 0; i < 3; ++i)
+    {
+        float* lo = &out.b.x + i;
+        float* hi = &out.t.x + i;
+
+        for (int j = 0; j < 3; ++j)
+        {
+            float k = basis[4 * j + i];
+            float p = (&box.b.x)[j] * k;
+            float q = (&box.t.x)[j] * k;
+
+            if (q <= p) {
+                *lo += q;
+                *hi += p;
+            } else {
+                *lo += p;
+                *hi += q;
+            }
+        }
+    }
+
+    return out;
 }
 
 C44Matrix C44Matrix::Transpose() const {

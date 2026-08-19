@@ -9,6 +9,7 @@ class C3Vector;
 class C4Vector;
 class C33Matrix;
 class C4Quaternion;
+class CAaBox;
 
 class C44Matrix {
     public:
@@ -75,6 +76,7 @@ class C44Matrix {
     void Translate(const C3Vector& move);
     C3Vector TransformPoint(const C3Vector& point);
     C4Vector TransformPoint(const C4Vector& point);
+    CAaBox Transform(CAaBox& box);
     void Scale(float scale);
     void Scale(const C3Vector& scale);
     void RotateAroundZ(float angle);
