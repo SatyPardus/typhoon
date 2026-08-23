@@ -3,4 +3,6 @@
 
 #include "tempest/random/CRandom.hpp"
 
+extern CRndSeed g_rndSeed;
+
 #endif
