@@ -76,6 +76,7 @@ class C44Matrix {
     void Translate(const C3Vector& move);
     C3Vector TransformPoint(const C3Vector& point);
     C4Vector TransformPoint(const C4Vector& point);
+    C3Vector TransformDirection(const C3Vector& point);
     CAaBox Transform(CAaBox& box);
     void Scale(float scale);
     void Scale(const C3Vector& scale);

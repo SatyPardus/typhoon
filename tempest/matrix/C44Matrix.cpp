@@ -641,6 +641,15 @@ C4Vector C44Matrix::TransformPoint(const C4Vector& point) {
     return vec;
 }
 
+// OFFSET: 0x57C2E0
+C3Vector C44Matrix::TransformDirection(const C3Vector& v) {
+    return {
+        this->a0 * v.x + this->b0 * v.y + this->c0 * v.z,
+        this->a1 * v.x + this->b1 * v.y + this->c1 * v.z,
+        this->a2 * v.x + this->b2 * v.y + this->c2 * v.z,
+    };
+}
+
 // OFFSET: 0x984860
 CAaBox C44Matrix::Transform(CAaBox& box) {
     CAaBox out;
