@@ -39,6 +39,20 @@ CAaBox CAaBox::Bounding(const C3Vector* vectors, uint32_t vectorsCount) {
     return box;
 }
 
+// OFFSET: 0x7150D0
+CAaBox operator|(const CAaBox& a, const CAaBox& b) {
+    CAaBox out;
+    out.t = C3Vector::Max(a.t, b.t);
+    out.b = C3Vector::Min(a.b, b.b);
+    return out;
+}
+
+// OFFSET: 0x715130
+CAaBox CAaBox::operator|=(const CAaBox& other) {
+    *this = *this | other;
+    return *this;
+}
+
 float CAaBox::DistanceSqXY(C2Vector& pos) {
     float clampedX;
     float diffX;

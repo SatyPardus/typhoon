@@ -14,6 +14,10 @@ class CAaBox {
     bool Intersects(CAaBox* other);
 
     static CAaBox Bounding(const C3Vector* vectors, uint32_t vectorsCount);
+
+    CAaBox operator|=(const CAaBox& other);
 };
+
+CAaBox operator|(const CAaBox& a, const CAaBox& b);
 
 #endif
