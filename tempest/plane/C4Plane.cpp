@@ -17,3 +17,10 @@ void C4Plane::From3Pos(const C3Vector& a, const C3Vector& b, const C3Vector& c) 
 
     d = -(n.x * a.x + n.y * a.y + n.z * a.z);
 }
+
+// OFFSET: 0x75B560
+void C4Plane::Swap(C4Plane* other) {
+    C4Plane tmp = *this;
+    *this = *other;
+    *other = tmp;
+}

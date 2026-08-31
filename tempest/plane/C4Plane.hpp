@@ -11,6 +11,7 @@ class C4Plane {
 
     C4Plane() = default;
     void From3Pos(const C3Vector& a, const C3Vector& b, const C3Vector& c);
+    void Swap(C4Plane* other);
 };
 
 #endif
