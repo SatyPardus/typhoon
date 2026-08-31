@@ -9,7 +9,10 @@ class CFacet {
     C4Plane plane;
     C3Vector v[3];
 
+    CFacet() = default;
+    CFacet(float a2);
     CFacet(C3Vector& v1, C3Vector& v2, C3Vector& v3);
+    void Set(float a2);
 };
 
 #endif

@@ -22,10 +22,12 @@ class C2Vector {
     float y = 0.0f;
 
     // Member functions
+
     C2Vector() = default;
     C2Vector(float x, float y)
         : x(x)
         , y(y) {};
+    // OFFSET: 0x4C4DF0
     explicit C2Vector(float a)
         : x(a)
         , y(a) {};

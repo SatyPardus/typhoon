@@ -12,6 +12,7 @@ class CAaBox {
     float DistanceSqXY(C2Vector& pos);
     float DistanceSq(C3Vector& pos);
     bool Intersects(CAaBox* other);
+    bool ContainsPoint(C3Vector& point);
 
     static CAaBox Bounding(const C3Vector* vectors, uint32_t vectorsCount);
 

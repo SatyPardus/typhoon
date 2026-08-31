@@ -43,6 +43,7 @@ class CMath {
         return n <= 0.0f ? static_cast<int32_t>(n - 0.5f) : static_cast<int32_t>(n + 0.5f);
     }
 
+    // OFFSET: 0x6E9320
     static bool fnotequal(float a, float b) {
         return !CMath::fequal(a, b);
     }
@@ -96,6 +97,7 @@ class CMath {
         z *= hi;
     }
 
+    // OFFSET: 0x4C5090
     static float normalizeangle0to2pi(float angle) {
         angle = fmodf(angle, TWO_PI);
         return angle < 0.0f ? angle + TWO_PI : angle;

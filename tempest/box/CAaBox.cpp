@@ -93,3 +93,8 @@ bool CAaBox::Intersects(CAaBox* other) {
         && this->b.y <= other->t.y
         && this->b.z <= other->t.z;
 }
+
+// OFFSET: 0x75B5B0
+bool CAaBox::ContainsPoint(C3Vector& point) {
+    return this->b.x <= point.x && this->b.y <= point.y && this->b.z <= point.z && this->t.x >= point.x && this->t.y >= point.y && this->t.z >= point.z;
+}

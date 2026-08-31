@@ -31,6 +31,7 @@ float C3Vector::Dot(const C3Vector& l, const C3Vector& r) {
     return (l.x * r.x) + (l.y * r.y) + (l.z * r.z);
 }
 
+// OFFSET: 0x5FEC70
 C3Vector C3Vector::Cross(const C3Vector& l, const C3Vector& r) {
     return {
         (l.y * r.z) - (l.z * r.y),

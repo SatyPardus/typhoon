@@ -279,6 +279,7 @@ C44Matrix C44Matrix::Adjoint() const {
  *
  * @return Inverse of matrix
  */
+// OFFSET: 0x4C2FC0
 C44Matrix C44Matrix::AffineInverse() const {
     auto matrix = C44Matrix(C33Matrix(*this).Transpose());
     matrix.Translate(C3Vector(-this->d0, -this->d1, -this->d2));
@@ -623,6 +624,7 @@ void C44Matrix::Translate(const C3Vector& move) {
     this->d2 = this->a2 * move.x + this->b2 * move.y + this->c2 * move.z + this->d2;
 }
 
+// OFFSET: 0x4C21B0
 C3Vector C44Matrix::TransformPoint(const C3Vector& point) {
     C3Vector vec;
     vec.x = this->a0 * point.x + this->b0 * point.y + this->c0 * point.z + this->d0;
