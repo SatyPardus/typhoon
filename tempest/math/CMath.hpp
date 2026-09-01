@@ -103,6 +103,16 @@ class CMath {
         return angle < 0.0f ? angle + TWO_PI : angle;
     }
 
+    // OFFSET: 0x0x4C50C0
+    static float normalizeAngleNegPiToPi(float angle) {
+        angle = fmodf(angle, TWO_PI);
+        if (angle < -PI)
+            return angle + TWO_PI;
+        if (angle > PI)
+            return angle - TWO_PI;
+        return angle;
+    }
+
     static uint32_t rotl3(uint32_t v) {
         return (v << 3) | (v >> 29);
     }
