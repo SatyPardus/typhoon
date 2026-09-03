@@ -326,6 +326,7 @@ void C33Matrix::Rotate(float angle) {
     *this = C33Matrix::Rotation(angle) * (*this);
 }
 
+// OFFSET: 0x4C5820
 void C33Matrix::Rotate(float angle, const C3Vector& axis, bool unit) {
     *this = C33Matrix::Rotation(angle, axis, unit) * (*this);
 }
