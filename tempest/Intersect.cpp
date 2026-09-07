@@ -59,8 +59,77 @@ bool NTempest::Intersect(const C3Vector& point, const C3Vector* verts, uint32_t 
     return inside;
 }
 
-// OFFSET: 0x9836B0
+// OFFSET: 0x983490
 bool NTempest::Intersect(const CRay* ray, const C3Vector* verts, uint16_t* idx, float* outT, float* outUV, float eps) {
+    float lo = -eps;
+    float hi = eps + 1.0f;
+
+    const C3Vector* p0 = &verts[idx[0]];
+    const C3Vector* p1 = &verts[idx[1]];
+    const C3Vector* p2 = &verts[idx[2]];
+
+    float e1x = p1->x - p0->x;
+    float e1y = p1->y - p0->y;
+    float e1z = p1->z - p0->z;
+
+    float e2x = p2->x - p0->x;
+    float e2y = p2->y - p0->y;
+    float e2z = p2->z - p0->z;
+
+    float pvx = ray->dir.y * e2z - ray->dir.z * e2y;
+    float pvy = ray->dir.z * e2x - e2z * ray->dir.x;
+    float pvz = e2y * ray->dir.x - e2x * ray->dir.y;
+
+    float det = e1z * pvz + pvy * e1y + pvx * e1x;
+
+    if (det > -0.000001f && det < 0.000001f) {
+        return false;
+    }
+
+    float invDet = 1.0f / det;
+
+    float tvx = ray->origin.x - p0->x;
+    float tvy = ray->origin.y - p0->y;
+    float tvz = ray->origin.z - p0->z;
+
+    float u = (pvy * tvy + pvz * tvz + tvx * pvx) * invDet;
+
+    if (lo > u) {
+        return false;
+    }
+
+    if (u > hi) {
+        return false;
+    }
+
+    float qvx = e1z * tvy - tvz * e1y;
+    float qvy = tvz * e1x - e1z * tvx;
+    float qvz = e1y * tvx - e1x * tvy;
+
+    float v = (ray->dir.z * qvz + ray->dir.y * qvy + ray->dir.x * qvx) * invDet;
+
+    if (lo > v) {
+        return false;
+    }
+
+    if (v + u > hi) {
+        return false;
+    }
+
+    if (outT) {
+        *outT = invDet * (qvz * e2z + qvy * e2y + qvx * e2x);
+    }
+
+    if (outUV) {
+        outUV[0] = u;
+        outUV[1] = v;
+    }
+
+    return true;
+}
+
+// OFFSET: 0x9836B0
+bool NTempest::Intersect(const CRay* ray, const C3Vector* verts, uint32_t* idx, float* outT, float* outUV, float eps) {
     const float lo = -eps;
     const float hi = 1.0f + eps;
 
