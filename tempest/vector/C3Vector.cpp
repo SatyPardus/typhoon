@@ -163,11 +163,12 @@ bool C3Vector::IsUnit() const {
 
 void C3Vector::Normalize() {
     float mag = this->Mag();
-    STORM_ASSERT(mag > 0.0f);
-    mag = 1.0f / mag;
-    this->x *= mag;
-    this->y *= mag;
-    this->z *= mag;
+    if (mag > 0.00000023841858f) {
+        mag = 1.0f / mag;
+        this->x *= mag;
+        this->y *= mag;
+        this->z *= mag;
+    }
 }
 
 void C3Vector::Scale(float a) {
