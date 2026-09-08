@@ -5,6 +5,7 @@ class C4Quaternion {
     public:
     // Static functions
     static C4Quaternion Nlerp(float ratio, const C4Quaternion& q1, const C4Quaternion& q2);
+    static C4Quaternion Slerp(float ratio, const C4Quaternion& q1, const C4Quaternion& q2);
 
     // Member variables
     float x = 0.0f;
@@ -19,6 +20,12 @@ class C4Quaternion {
         , y(y)
         , z(z)
         , w(w) {};
+
+    void Normalize();
+    void FromBasis(const float* basis);
+    void FromRotationMatrix(float trace, const float* m);
 };
+
+C4Quaternion operator*(const C4Quaternion& l, const C4Quaternion& r);
 
 #endif
