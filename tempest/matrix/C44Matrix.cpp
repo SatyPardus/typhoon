@@ -10,6 +10,7 @@ float C44Matrix::Det(float a, float b, float c, float d, float e, float f, float
     return (b * f * g) + (c * d * h) + (a * e * i) - (c * e * g) - (b * d * i) - (a * f * h);
 }
 
+// OFFSET: 0x4C3460
 C44Matrix C44Matrix::Rotation(float angle, const C3Vector& axis, bool unit) {
     C3Vector axis_ = axis;
     if (!unit) {

@@ -103,13 +103,24 @@ class CMath {
         return angle < 0.0f ? angle + TWO_PI : angle;
     }
 
-    // OFFSET: 0x0x4C50C0
+    // OFFSET: 0x4C50C0
     static float normalizeAngleNegPiToPi(float angle) {
         angle = fmodf(angle, TWO_PI);
         if (angle < -PI)
             return angle + TWO_PI;
         if (angle > PI)
             return angle - TWO_PI;
+        return angle;
+    }
+
+    // OFFSET: 0x7156C0
+    static float normalizeAnglePi(float angle) {
+        if (angle > PI)
+            return fmodf(angle + PI, TWO_PI) - PI;
+
+        if (angle < -PI)
+            return fmodf(angle - PI, TWO_PI) + PI;
+
         return angle;
     }
 
