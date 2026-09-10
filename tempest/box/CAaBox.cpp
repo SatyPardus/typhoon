@@ -39,6 +39,12 @@ CAaBox CAaBox::Bounding(const C3Vector* vectors, uint32_t vectorsCount) {
     return box;
 }
 
+// OFFSET: 0x78F480
+CAaBox::CAaBox(const C3Vector& b, const C3Vector& t) {
+    this->b = b;
+    this->t = t;
+}
+
 // OFFSET: 0x7150D0
 CAaBox operator|(const CAaBox& a, const CAaBox& b) {
     CAaBox out;

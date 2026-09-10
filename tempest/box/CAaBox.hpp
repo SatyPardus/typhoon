@@ -9,6 +9,8 @@ class CAaBox {
     C3Vector b;
     C3Vector t;
 
+    CAaBox() = default;
+    CAaBox(const C3Vector& b, const C3Vector& t);
     float DistanceSqXY(C2Vector& pos);
     float DistanceSq(C3Vector& pos);
     bool Intersects(CAaBox* other);
