@@ -94,6 +94,8 @@ C3Vector operator*(float l, const C3Vector& r);
 C3Vector operator*(const C3Vector& l, const C33Matrix& r);
 C3Vector operator*(const C3Vector& l, const C44Matrix& r);
 
+C3Vector operator*=(C3Vector& l, const C44Matrix& r);
+
 bool operator==(const C3Vector& l, const C3Vector& r);
 bool operator!=(const C3Vector& l, const C3Vector& r);
 

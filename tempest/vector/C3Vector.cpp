@@ -252,6 +252,18 @@ C3Vector operator*(const C3Vector& l, const C44Matrix& r) {
     return { x, y, z };
 }
 
+// OFFSET: 0x4C2300
+C3Vector operator*=(C3Vector& l, const C44Matrix& r) {
+    float y = r.c1 * l.z + r.b1 * l.y + r.a1 * l.x + r.d1;
+    float z = r.c2 * l.z + r.b2 * l.y + r.a2 * l.x + r.d2;
+
+    l.x = r.c0 * l.z + r.b0 * l.y + l.x * r.a0 + r.d0;
+    l.y = y;
+    l.z = z;
+
+    return l;
+}
+
 bool operator==(const C3Vector& l, const C3Vector& r) {
     return l.x == r.x && l.y == r.y && l.z == r.z;
 }

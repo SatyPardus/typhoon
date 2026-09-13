@@ -70,6 +70,7 @@ class C44Matrix {
     C44Matrix& operator*=(const C44Matrix& a);
     C44Matrix& operator/=(float a);
 
+    void Copy(const C44Matrix& m);
     void Zero();
     void Identity();
     float Trace();

@@ -711,6 +711,29 @@ C44Matrix C44Matrix::Transpose() const {
     return { a0, b0, c0, d0, a1, b1, c1, d1, a2, b2, c2, d2, a3, b3, c3, d3 };
 }
 
+// OFFSET: 0x407F80
+void C44Matrix::Copy(const C44Matrix& m) {
+    this->a0 = m.a0;
+    this->a1 = m.a1;
+    this->a2 = m.a2;
+    this->a3 = m.a3;
+
+    this->b0 = m.b0;
+    this->b1 = m.b1;
+    this->b2 = m.b2;
+    this->b3 = m.b3;
+
+    this->c0 = m.c0;
+    this->c1 = m.c1;
+    this->c2 = m.c2;
+    this->c3 = m.c3;
+
+    this->d0 = m.d0;
+    this->d1 = m.d1;
+    this->d2 = m.d2;
+    this->d3 = m.d3;
+}
+
 void C44Matrix::Zero() {
     this->a0 = 0.0f;
     this->a1 = 0.0f;
